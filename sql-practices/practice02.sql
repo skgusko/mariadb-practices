@@ -18,15 +18,25 @@ where hire_date = (
 
 -- 문제3.
 -- 가장 오래 근속한 직원의 입사일은 언제인가요? 다음 형식으로 출력하세요.
--- 예) 2014년 07월 10일
-select *
-from dept_emp;
+-- 예) 2014년 07월 10일 (employee에서만. curdate() 에서만. hire_date로. min. 다 다니고 있다고 가정하고)
+select date_format(min(hire_date), "%Y년 %m월 %d일") as "장기 근속자 입사일"
+from employees;
 
 -- 문제4.
 -- 현재, 이 회사의 평균 연봉은 얼마입니까?
+select avg(salary) as "평균 연봉"
+from salaries;
+
 
 -- 문제5.
 -- 현재, 이 회사의 최고/최저 연봉은 각각 얼마입니까?
+select max(salary) as "최고 연봉", min(salary) as "최저 연봉"
+from salaries
+where to_date='9999-01-01';
+
 
 -- 문제6.
 -- 현재, 근무중인 사원 중 나이가 제일 어린 사원과 제일 많은 사원의 나이를 각각 출력하세요.
+select (date_format(curdate(), '%Y') - date_format(max(birth_date), '%Y')) as "나이가 가장 적은 사원",
+	   (date_format(curdate(), '%Y') - date_format(min(birth_date), '%Y')) as "나이가 가장 많은 사원"
+from employees;

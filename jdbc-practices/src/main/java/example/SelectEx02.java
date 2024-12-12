@@ -3,45 +3,64 @@ package example;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class InsertEx02 {
+public class SelectEx02 {
 	public static void main(String[] args) {
-		System.out.println(insert(new DepartmentVo("영업1팀")));
-		System.out.println(insert(new DepartmentVo("영업2팀")));
+		List<DepartmentVo> result = search("팀");
+		for (DepartmentVo vo : result) {
+			System.out.println(vo);
+		}
 	}
 
-	public static boolean insert(DepartmentVo vo) {
-		boolean result = false;
+	public static List<DepartmentVo> search(String keyword) {
+		List<DepartmentVo> result = new ArrayList<>();
 		Connection conn = null;
 		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
 		
 		try {
 			// 1. JDBC Driver 로딩
-			Class.forName("org.mariadb.jdbc.Driver"); //method Area에 올라옴
+			Class.forName("org.mariadb.jdbc.Driver");
 			
 			// 2. 연결하기
 			String url = "jdbc:mariadb://192.168.56.5:3306/webdb";
 			conn = DriverManager.getConnection(url, "webdb", "webdb");
 
 			// 3. Statement 준비하기
-			String sql = "insert into department values(null, ?)"; //PreparedStatement가 Statement와 다른 점! +) 이외 보안에 더 좋음
+			String sql = "select id, name from department where name like ?";
 			pstmt = conn.prepareStatement(sql);
 			
 			// 4. Parameter Binding
-			pstmt.setString(1, vo.getName()); //DB에선 1부터 인덱스 시작
+			pstmt.setString(1, "%" + keyword + "%");
 			
 			// 5. SQL 실행 
-			int count = pstmt.executeUpdate(); //주의! JDBC가 바인딩 시켜놓은 SQL로 쿼리 날려야 하므로 인자값 x
+			rs = pstmt.executeQuery();
 			
-			result = count == 1;
+			// 6. 결과 처리
+			while(rs.next()) {
+				Long id = rs.getLong(1);
+				String name = rs.getString(2);
+				
+				DepartmentVo vo = new DepartmentVo(id, name);
+				result.add(vo);
+			}
 			
-		} catch (ClassNotFoundException e) { //jar가 Classpath에 없으면 에러남
+//			result = count == 1;
+			System.out.println("SQL 실행 성공");
+		} catch (ClassNotFoundException e) { 
 			System.out.println("드라이버 로딩 실패: " + e);
 		} catch (SQLException e) {
 			System.out.println("error: " + e);
 		} finally {
-			try { //생성 역순으로 자원 해제
+			try { 
+				if (rs != null) {
+					rs.close();
+				}
 				if (pstmt != null) {
 					pstmt.close();
 				}

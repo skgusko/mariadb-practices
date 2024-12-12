@@ -5,13 +5,12 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class InsertEx02 {
+public class DeleteEx02 {
 	public static void main(String[] args) {
-		System.out.println(insert(new DepartmentVo("영업1팀")));
-		System.out.println(insert(new DepartmentVo("영업2팀")));
+		System.out.println(delete(4L));
 	}
 
-	public static boolean insert(DepartmentVo vo) {
+	public static boolean delete(Long id) {
 		boolean result = false;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -25,11 +24,11 @@ public class InsertEx02 {
 			conn = DriverManager.getConnection(url, "webdb", "webdb");
 
 			// 3. Statement 준비하기
-			String sql = "insert into department values(null, ?)"; //PreparedStatement가 Statement와 다른 점! +) 이외 보안에 더 좋음
+			String sql = "delete from department where id = ?"; //PreparedStatement가 Statement와 다른 점! +) 이외 보안에 더 좋음
 			pstmt = conn.prepareStatement(sql);
 			
 			// 4. Parameter Binding
-			pstmt.setString(1, vo.getName()); //DB에선 1부터 인덱스 시작
+			pstmt.setLong(1, id); //DB에선 1부터 인덱스 시작
 			
 			// 5. SQL 실행 
 			int count = pstmt.executeUpdate(); //주의! JDBC가 바인딩 시켜놓은 SQL로 쿼리 날려야 하므로 인자값 x

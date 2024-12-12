@@ -12,6 +12,10 @@ public class DepartmentVo {
 		this.name = name;
 	}
 	
+	public DepartmentVo(String name) {
+		this.name = name;
+	}
+
 	public Long getId() {
 		return id;
 	}

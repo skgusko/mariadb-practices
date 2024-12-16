@@ -16,12 +16,19 @@
 	</properties>
 
 	<dependencies>
-		<!--
-		https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client -->
 		<dependency>
+			<!-- mariadb jdbc -->
 			<groupId>org.mariadb.jdbc</groupId>
 			<artifactId>mariadb-java-client</artifactId>
 			<version>3.4.0</version>
+		</dependency>
+		
+		<dependency>
+			<!-- junit jupiter -->
+		    <groupId>org.junit.jupiter</groupId>
+		    <artifactId>junit-jupiter-api</artifactId>
+		    <version>5.10.2</version>
+		    <scope>test</scope>
 		</dependency>
 
 	</dependencies>

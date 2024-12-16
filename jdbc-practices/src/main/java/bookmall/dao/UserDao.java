@@ -12,10 +12,12 @@ import bookmall.vo.UserVo;
 
 public class UserDao {
 	
-	public boolean insert(UserVo vo) {
-		boolean result = false;
+	public int insert(UserVo vo) {
+		int count = 0;
+		
 		Connection conn = null;
-		PreparedStatement pstmt = null;
+		PreparedStatement pstmt1 = null;
+		PreparedStatement pstmt2 = null;
 		ResultSet rs = null;
 		
 		try {
@@ -26,22 +28,20 @@ public class UserDao {
 					"   into user" +
 					" values (null, ?, ?, ?, ?)"; 
 			
-			pstmt = conn.prepareStatement(sql);
+			pstmt1 = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, vo.getName()); 
-			pstmt.setString(2, vo.getEmail());
-			pstmt.setString(3, vo.getPassword());
-			pstmt.setString(4, vo.getPhone());
+			pstmt1.setString(1, vo.getName()); 
+			pstmt1.setString(2, vo.getEmail());
+			pstmt1.setString(3, vo.getPassword());
+			pstmt1.setString(4, vo.getPhone());
 			
-			int count = pstmt.executeUpdate();
-			
-			result = count == 1;
+			count = pstmt1.executeUpdate();
 			
 			// Auto Increment 인 'no' 컬럼의 데이터값 vo 객체의 no 필드에 할당
             sql = "select last_insert_id()";
 
-            pstmt = conn.prepareStatement(sql);
-            rs = pstmt.executeQuery();
+            pstmt2 = conn.prepareStatement(sql);
+            rs = pstmt2.executeQuery();
 
             Long no = 0L;
             while (rs.next()) {
@@ -56,8 +56,11 @@ public class UserDao {
 				if (rs != null) {
 					rs.close();
 				}
-				if (pstmt != null) {
-					pstmt.close();
+				if (pstmt2 != null) {
+					pstmt2.close();
+				}
+				if (pstmt1 != null) {
+					pstmt1.close();
 				}
 				if (conn != null) {
 					conn.close();
@@ -67,7 +70,7 @@ public class UserDao {
 			}
 		}
 		
-		return result;
+		return count;
 	}
 	
 	public List<UserVo> findAll() {

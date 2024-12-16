@@ -5,8 +5,8 @@ import java.util.Scanner;
 
 import bookshop.dao.AuthorDao;
 import bookshop.dao.BookDao;
-import bookshop.dao.BookVo;
 import bookshop.vo.AuthorVo;
+import bookshop.vo.BookVo;
 
 public class BookShopApp {
 	public static void main(String[] args) {

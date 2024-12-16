@@ -1,14 +1,25 @@
 package bookmall;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+import java.util.List;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import bookmall.dao.BookDao;
+import bookmall.dao.CartDao;
 import bookmall.dao.CategoryDao;
+import bookmall.dao.OrderDao;
 import bookmall.dao.UserDao;
+import bookmall.vo.BookVo;
+import bookmall.vo.CartVo;
 import bookmall.vo.CategoryVo;
+import bookmall.vo.OrderBookVo;
+import bookmall.vo.OrderVo;
 import bookmall.vo.UserVo;
 
 /**
@@ -21,7 +32,7 @@ public class BookMallTest {
 	private static CategoryVo mockCategoryVo01 = new CategoryVo("인문");
 	private static CategoryVo mockCategoryVo02 = new CategoryVo("컴퓨터/IT");
 	private static CategoryVo mockCategoryVo03 = new CategoryVo("예술");
-	/*
+	
 	private static BookVo mockBookVo01 = new BookVo("과학혁명의 구조", 20000);
 	private static BookVo mockBookVo02 = new BookVo("J2EE Development Without EJB", 32000);
 	private static BookVo mockBookVo03 = new BookVo("서양미술사", 50000);
@@ -32,13 +43,13 @@ public class BookMallTest {
 	private static OrderVo mockOrderVo = new OrderVo();
 	
 	private static OrderBookVo mockOrderBookVo01 = new OrderBookVo();
-	private static OrderBookVo mockOrderBookVo02 = new OrderBookVo();*/
+	private static OrderBookVo mockOrderBookVo02 = new OrderBookVo();
 	
 	private static UserDao userDao = new UserDao();
-	private static CategoryDao categoryDao = new CategoryDao();/*
+	private static CategoryDao categoryDao = new CategoryDao();
 	private static BookDao bookDao = new BookDao();
 	private static CartDao cartDao = new CartDao();
-	private static OrderDao orderDao = new OrderDao();*/
+	private static OrderDao orderDao = new OrderDao();
 			
 	@BeforeAll
 	public static void setUp() {
@@ -50,7 +61,7 @@ public class BookMallTest {
 		categoryDao.insert(mockCategoryVo01);
 		categoryDao.insert(mockCategoryVo02);
 		categoryDao.insert(mockCategoryVo03);
-		/*
+		
 		// 서적 등록(3개)
 		mockBookVo01.setCategoryNo(mockCategoryVo01.getNo());
 		bookDao.insert(mockBookVo01);
@@ -89,7 +100,7 @@ public class BookMallTest {
 		mockOrderBookVo02.setBookNo(mockBookVo02.getNo());
 		mockOrderBookVo02.setQuantity(2);
 		mockOrderBookVo02.setPrice(64000);		
-		orderDao.insertBook(mockOrderBookVo02);*/
+		orderDao.insertBook(mockOrderBookVo02);
 	}
 	
 	
@@ -101,7 +112,7 @@ public class BookMallTest {
 	public void testCategory() {
 		assertEquals(3, categoryDao.findAll().size());
 	}
-	/*
+	
 	@Test
 	public void testCart() {
 		List<CartVo> list = cartDao.findByUserNo(mockUserVo01.getNo());
@@ -143,10 +154,10 @@ public class BookMallTest {
 		assertEquals(mockOrderBookVo02.getPrice(), list.get(1).getPrice());
 		assertEquals(mockOrderBookVo02.getBookNo(), list.get(1).getBookNo());
 		assertEquals(mockBookVo02.getTitle(), list.get(1).getBookTitle());		
-	}*/
+	}
 	
 	@AfterAll
-	public static void cleanUp() {/*
+	public static void cleanUp() {
 		//주문책
 		orderDao.deleteBooksByNo(mockOrderVo.getNo());
 		
@@ -160,7 +171,7 @@ public class BookMallTest {
 		// 서적
 		bookDao.deleteByNo(mockBookVo01.getNo());
 		bookDao.deleteByNo(mockBookVo02.getNo());
-		bookDao.deleteByNo(mockBookVo03.getNo());*/
+		bookDao.deleteByNo(mockBookVo03.getNo());
 		
 		// 카테고리
 		categoryDao.deleteByNo(mockCategoryVo01.getNo());

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import bookshop.vo.AuthorVo;
+import bookshop.vo.BookVo;
 
 public class BookDaoTest {
 	

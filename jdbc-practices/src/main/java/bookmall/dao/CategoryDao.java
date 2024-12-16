@@ -12,10 +12,11 @@ import bookmall.vo.CategoryVo;
 
 public class CategoryDao {
 	
-	public boolean insert(CategoryVo vo) {
-		boolean result = false;
+	public int insert(CategoryVo vo) {
+		int count = 0;
 		Connection conn = null;
-		PreparedStatement pstmt = null;
+		PreparedStatement pstmt1 = null;
+		PreparedStatement pstmt2 = null;
 		ResultSet rs = null;
 		
 		try {
@@ -26,19 +27,18 @@ public class CategoryDao {
 					"   into category" +
 					" values (null, ?)"; 
 			
-			pstmt = conn.prepareStatement(sql);
+			pstmt1 = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, vo.getName());
+			pstmt1.setString(1, vo.getName());
 			
-			int count = pstmt.executeUpdate();
+			count = pstmt1.executeUpdate();
 			
-			result = count == 1;
 			
 			// Auto Increment 인 'no' 컬럼의 데이터값 vo 객체의 no 필드에 할당
             sql = "select last_insert_id()";
 
-            pstmt = conn.prepareStatement(sql);
-            rs = pstmt.executeQuery();
+            pstmt2 = conn.prepareStatement(sql);
+            rs = pstmt2.executeQuery();
 
             Long no = 0L;
             while (rs.next()) {
@@ -53,8 +53,11 @@ public class CategoryDao {
 				if (rs != null) {
 					rs.close();
 				}
-				if (pstmt != null) {
-					pstmt.close();
+				if (pstmt2 != null) {
+					pstmt2.close();
+				}
+				if (pstmt1 != null) {
+					pstmt1.close();
 				}
 				if (conn != null) {
 					conn.close();
@@ -64,7 +67,7 @@ public class CategoryDao {
 			}
 		}
 		
-		return result;
+		return count;
 	}
 	
 	
